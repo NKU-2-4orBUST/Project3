@@ -1,0 +1,39 @@
+from os import system as s
+
+# Verifiy Monit monitors and restarts SSH
+s( echo "Testing SSH..."; systemctl stop sshd; monit; sleep 5; monit summary | grep SSH; sleep 120; monit summary | grep SSH)
+
+# Verifiy Monit monitors and restarts NFS
+s(echo "Testing NFS..."; systemctl stop nfslock nfs; monit; sleep 5; monit summary | grep NFS; sleep 35; monit summary | grep NFS)
+
+# Verifiy Monit monitors and restarts LDAP
+s(echo "Testing LDAP..."; systemctl stop slapd; monit; sleep 5; monit summary | grep LDAP; sleep 35; monit summary | grep LDAP)
+
+# Verifiy Monit monitors and restarts RSYSLOG
+s(echo "Testing RSYSLOG..."; systemctl stop rsyslog; monit; sleep 5; monit summary | grep RSYSLOG; sleep 35; monit summary | grep RSYSLOG)
+
+# Verifiy Monit monitors Memory usages
+s(echo "Testing System CPU Monitoring..."; monit; sleep 5; monit summary | grep Group-2-CIT470-NKU-EDU; stress --vm  1 --vm-bytes 3500M --timeout 45s; monit summary | grep Group-2-CIT470-NKU-EDU)
+
+# Verifiy Monit monitors CPU usages
+s(echo "Testing System CPU Monitoring..."; monit; monit summary | grep Group-2-CIT470-NKU-EDU; stress --vm-bytes 256M --cpu 100 --timeout 40s; monit summary | grep Group-2-CIT470-NKU-EDU)
+
+
+#Test hard drive alarm
+test_hard_drive () {
+echo "Testing disk usage.."
+dd if=/dev/zero of=/dev/diskhog bs=1M count=100000 >& 1 >> /var/log/server-test.log
+sleep 60
+monit summary | grep Home
+monit summary | grep Root
+monit summary | grep Var
+rm /dev/diskhog -f >& 1 >> /var/log/server-test.log
+echo "Disk usage testing complete!"
+}
+
+kill_ssh
+kill_syslog
+kill_nfs
+kill_ldap
+overload_cpu
+test_hard_drive
