@@ -20,3 +20,4 @@ s('echo ""; echo "Testing System CPU Monitoring..."; monit; sleep 5; monit summa
 
 # Verifiy Monit monitors Disk Space usages
 s('echo ""; echo "Testing Monit Disk Monitoring..."; monit summary | grep -e HOME -e ROOT -e VAR; echo ""; echo "Filling /HOME..."; dd if=/dev/zero of=/home/zero bs=51200 count=1000000; echo ""; echo "Filling /VAR..."; dd if=/dev/zero of=/var/zero bs=51200 count=1000000; echo ""; echo "Filling /..."; dd if=/dev/zero of=/zero bs=51200 count=1000000; echo ""; echo "Waiting for Monit Cycles"; sleep 90; monit summary | grep -e HOME -e ROOT -e VAR;  echo ""; echo "Cleaning up disk test..."; rm -f /home/zero; rm -f /var/zero; rm -f /zero')
+
