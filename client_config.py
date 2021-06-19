@@ -11,4 +11,3 @@ client = args.c
 
 s('wget https://github.com/NKU-2-4orBUST/Project3/raw/main/monitrc_client')
 s('sed "s/IP_SERVER.*/'+server+'/g" monitrc_client > monit_test; sed "s/IP_ClIENT.*/'+client+'/g" monitrc_test > monit_test')
-s
