@@ -19,21 +19,5 @@ s(echo "Testing System CPU Monitoring..."; monit; sleep 5; monit summary | grep 
 s(echo "Testing System CPU Monitoring..."; monit; monit summary | grep Group-2-CIT470-NKU-EDU; stress --vm-bytes 256M --cpu 100 --timeout 40s; monit summary | grep Group-2-CIT470-NKU-EDU)
 
 
-#Test hard drive alarm
-test_hard_drive () {
-echo "Testing disk usage.."
-dd if=/dev/zero of=/dev/diskhog bs=1M count=100000 >& 1 >> /var/log/server-test.log
-sleep 60
-monit summary | grep Home
-monit summary | grep Root
-monit summary | grep Var
-rm /dev/diskhog -f >& 1 >> /var/log/server-test.log
-echo "Disk usage testing complete!"
-}
-
-kill_ssh
-kill_syslog
-kill_nfs
-kill_ldap
-overload_cpu
-test_hard_drive
+# Verifiy Monit monitors Disk Space usages
+s(echo "Testing Monit Disk Monitoring..."; monit summary | grep -e HOME -e ROOT -e VAR; echo "Filling /HOME..."; dd if=/dev/zero of=/home/zero bs=51200 count=1000000; echo "Filling /VAR..."; dd if=/dev/zero of=/var/zero bs=51200 count=1000000; echo "Filling /..."; dd if=/dev/zero of=/zero bs=51200 count=1000000; echo "Waiting for Monit Cycles"; sleep 90; monit summary | grep -e HOME -e ROOT -e VAR;  echo "Cleaning up disk test..."; rm -f /home/zero; rm -f /var/zero; rm -f /zero)
