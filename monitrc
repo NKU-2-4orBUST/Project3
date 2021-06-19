@@ -162,7 +162,7 @@ set mailserver smtp.gmail.com port 587
 set httpd port 2812 and
     use address 10.2.7.71    # only accept connection from localhost (drop if you use M/Monit)
     allow 0.0.0.0/0.0.0.0    # allow localhost to connect to the server and
-    allow superuser:Nhy67ujm!
+    allow superuser:"Nhy67ujm!"
     #with ssl {              # enable SSL/TLS and set path to server certificate
     #    pemfile: /etc/ssl/certs/monit.pem
     #}
@@ -207,8 +207,8 @@ set httpd port 2812 and
 ## is defined above.
 #
   check process apache with pidfile /usr/local/apache/logs/httpd.pid
-    start program = "/etc/init.d/httpd start" with timeout 60 seconds
-    stop program  = "/etc/init.d/httpd stop"
+    start program = "/usr/bin/systemctl start httpd" with timeout 60 seconds
+    stop program  = "/usr/bin/systemctl stop httpd"
 #    if cpu > 60% for 2 cycles then alert
 #    if cpu > 80% for 5 cycles then restart
 #    if totalmem > 200.0 MB for 5 cycles then restart
@@ -318,7 +318,7 @@ check process NFS with pidfile /var/run/rpc.statd.pid
 check process ldap with pidfile /var/run/openldap/slapd.pid
   	start program = "/usr/bin/systemctl start slapd"
   	stop program  = "/usr/bin/systemctl stop slapd"  
-  	if 5 restarts within 5 cycles then timeout\
+  	if 5 restarts within 5 cycles then timeout
 
 ## Monit SSH service
 check process SSH with pidfile /var/run/sshd.pid
@@ -339,18 +339,22 @@ check filesystem "VAR" with path /var
 check host Client1 with address 10.2.6.9
   if failed ping then alert
   if failed port 22 protocol ssh then alert
+  if failed port 514 then alert
 
 check host Client2 with address 10.2.6.3
   if failed ping then alert
   if failed port 22 protocol ssh then alert
+  if failed port 514 then alert
 
 check host Client3 with address 10.2.6.4
   if failed ping then alert
   if failed port 22 protocol ssh then alert
+  if failed port 514 then alert
 
 check host Client4 with address 10.2.6.7
   if failed ping then alert
   if failed port 22 protocol ssh then alert
+  if failed port 514 then alert
 
 #
 ###############################################################################
@@ -359,6 +363,5 @@ check host Client4 with address 10.2.6.7
 ##
 ## It is possible to include additional configuration parts from other files or
 ## directories.
-#
-include /etc/monit.d/*
+#include /etc/monit.d/
 #
