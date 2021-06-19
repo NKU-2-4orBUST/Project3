@@ -1,7 +1,7 @@
 from os import system as s
 import re, argparse
 #Creates Command line Argument Parsers
-parser=argparse.ArgumentParser(usage='Quickly install or reinstall servers',description='Used to install Monit monitoring server on newly imaged clients  |  Format:  0.0.0.0-->255.255.255.255',add_help=True,allow_abbrev=True)
+parser=argparse.ArgumentParser(usage='Quickly install or reinstall servers',description='Used to install Monit monitoring server on newly imaged clients  |  Format:  0.0.0.0-->255.255.255.255 | Example 192.268.1.45',add_help=True,allow_abbrev=True)
 parser.add_argument('-s','--server', required=True, help='Sets variable for Server IP')
 parser.add_argument('-c','--client', required=True, help='Sets variable for Server IP')
 args = parser.parse_args()
