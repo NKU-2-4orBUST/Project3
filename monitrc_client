@@ -160,7 +160,7 @@ set mailserver smtp.gmail.com port 587
 ## enable SSL for the HTTP interface.
 #
 set httpd port 2812 and
-    use address 10.2.6.4
+    use address IP_CLIENT
     allow 0.0.0.0/0.0.0.0   # allow localhost to connect to the server and
     allow superuser:"Nhy67ujm!"
     #with ssl {              # enable SSL/TLS and set path to server certificate
@@ -301,7 +301,7 @@ check filesystem "HOME" with path /home
 check filesystem "VAR" with path /var
   if space usage > 75% for 2 times within 15 cycles then alert
 
-check host Server with address 10.2.7.71
+check host Server with address IP_SERVER
   if failed ping then alert
   if failed port 22 protocol ssh then alert
   if failed port 389 then alert
