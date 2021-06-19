@@ -21,7 +21,7 @@ def config():
   # Configures Monit and rsyslog
   s('echo "Configuring rsyslog and Monit"; sed "s/IP_SERVER.*/'+args.server+'/g" monitrc_client > monitrc1; sed "s/IP_CLIENT.*/'+args.client+'/g" monitrc_test > /etc/monitrc; sed "s/IP_SERVER.*/'+args.server+':514/g" rsyslog.conf > /etc/rsyslog.conf; systemctl enable monit rsyslog; systemctl start monit rsyslog')
   # Configure Firewall for Monit and rsyslog
-  s('echo "Configuring Firewall for rsyslog monitoring";firewall-cmd --zone=public --add-port=514/udp -–permanent; firewall-cmd --reload')
+  s('echo "Configuring Firewall for rsyslog monitoring"; firewall-cmd --zone=public --add-port=514/tcp -–permanent; firewall-cmd --zone=public --add-port=514/udp -–permanent; firewall-cmd --reload')
   # Removes downloaded files
   s('echo "Cleaning up files"; rm -f monitrc_client monitrc1 rsyslog.conf')
   
