@@ -2,9 +2,9 @@ from os import system as s
 
 import os, argparse
 #Creates Command line Argument Parsers
-parser=argparse.ArgumentParser(usage='Quickly install or reinstall servers',description='Used to install 1 or more servers including: Apache 2.4, NFS, and LDAP  |  Format: python3 ./install-server [-l,--ldap][-n,--nfs][-a,--apache]',add_help=True,allow_abbrev=True)
-parser.add_argument('-s','--server', required=True help='Sets variable for Server IP')
-parser.add_argument('-c','--client', required=True help='Sets variable for Server IP')
+parser=argparse.ArgumentParser(usage='Quickly install or reinstall servers',description='Used to install Monit monitoring server on newly imaged clients  |  Format:  0.0.0.0-->255.255.255.255',add_help=True,allow_abbrev=True)
+parser.add_argument('-s','--server', required=True, help='Sets variable for Server IP')
+parser.add_argument('-c','--client', required=True, help='Sets variable for Server IP')
 args = parser.parse_args()
 server = args.s
 client = args.c
