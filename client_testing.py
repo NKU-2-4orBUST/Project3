@@ -1,5 +1,8 @@
 from os import system as s
 
+# Installing stress for testing
+s.('yum -y install stress')
+
 # Verifiy Monit monitors and restarts SSH
 s('echo ""; echo "Testing SSH..."; systemctl stop sshd; monit; sleep 5; monit summary | grep SSH; sleep 35; monit summary | grep SSH')
 
@@ -7,7 +10,7 @@ s('echo ""; echo "Testing SSH..."; systemctl stop sshd; monit; sleep 5; monit su
 s('echo ""; echo "Testing RSYSLOG..."; systemctl stop rsyslog; monit; sleep 5; monit summary | grep RSYSLOG; sleep 35; monit summary | grep RSYSLOG')
 
 # Verifiy Monit monitors and restarts SENDMAIL
-s('echo ""; echo "Testing SENDMAIL..."; systemctl stop sendmail; monit; sleep 5; monit summary | grep SENDMAIL; sleep 35; monit summary | grep SENDMAIL')
+s('echo ""; echo "Testing SENDMAIL..."; systemctl stop sendmail; monit; sleep 5; monit summary | grep SENDMAIL; echo "Waiting 2 minutes for SENDMAIL services to restart"; sleep 120; monit summary | grep SENDMAIL')
 
 # Verifiy Monit monitors and restarts LDAP
 s('echo ""; echo "Testing LDAP..."; systemctl stop nslcd; monit; sleep 5; monit summary | grep LDAP; sleep 35; monit summary | grep LDAP')
