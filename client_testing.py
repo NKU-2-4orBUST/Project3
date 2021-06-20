@@ -10,7 +10,7 @@ s('echo ""; echo "Testing RSYSLOG..."; systemctl stop rsyslog; monit; sleep 5; m
 s('echo ""; echo "Testing SENDMAIL..."; systemctl stop sendmail; monit; sleep 5; monit summary | grep SENDMAIL; sleep 35; monit summary | grep SENDMAIL')
 
 # Verifiy Monit monitors and restarts LDAP
-s('echo ""; echo "Testing LDAP..."; systemctl stop nslcd; monit; sleep 5; monit summary | grep LDAP; sleep 35; monit summary | grep SLAPD')
+s('echo ""; echo "Testing LDAP..."; systemctl stop nslcd; monit; sleep 5; monit summary | grep LDAP; sleep 35; monit summary | grep LDAP')
 
 # Verifiy Monit monitors Memory usages
 s('echo ""; echo "Testing System Memory Monitoring..."; monit; sleep 5; monit summary | grep Group-2-CIT470-NKU-EDU; stress --vm  1 --vm-bytes 3500M --timeout 45s; monit summary | grep Group-2-CIT470-NKU-EDU')
@@ -22,4 +22,4 @@ s('echo ""; echo "Testing System CPU Monitoring..."; monit; sleep 5; monit summa
 s('echo ""; echo "Testing Monit Disk Monitoring..."; monit summary | grep -e HOME -e ROOT -e VAR; echo ""; echo "Filling /HOME..."; dd if=/dev/zero of=/home/zero bs=51200 count=1000000; echo ""; echo "Filling /VAR..."; dd if=/dev/zero of=/var/zero bs=51200 count=1000000; echo ""; echo "Filling /..."; dd if=/dev/zero of=/zero bs=51200 count=1000000; echo ""; echo "Waiting for Monit Cycles"; sleep 90; monit summary | grep -e HOME -e ROOT -e VAR;  echo ""; echo "Cleaning up disk test..."; rm -f /home/zero; rm -f /var/zero; rm -f /zero')
 
 # Verifiy Monit monitors /HOME Mounting
-s('echo ""; echo "Testing Monit /HOME mounting..."; monit summary | grep -e HOME; echo ""; echo "Unmounting /HOME..."; umount /home; monit; monit summary | grep -e HOME; echo "Waiting for Monit Cycles"; sleep 60; monit summary | grep -e HOME')
+s('echo ""; echo "Testing Monit /HOME mounting..."; echo "Verifying Monit is watching a NFS mounted partition..."; monit summary | grep -e HOME; nfsstat -m; echo ""; sleep 5; echo "Unmounting /HOME..."; umount /home; monit; sleep 5; monit summary | grep -e HOME; echo "Waiting for Monit Cycles"; sleep 60; monit summary | grep -e HOME')
