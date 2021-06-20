@@ -16,10 +16,10 @@ s('echo ""; echo "Testing SENDMAIL..."; systemctl stop sendmail; monit; sleep 5;
 s('echo ""; echo "Testing LDAP..."; systemctl stop nslcd; monit; sleep 5; monit summary | grep LDAP; sleep 35; monit summary | grep LDAP')
 
 # Verifiy Monit monitors Memory usages
-s('echo ""; echo "Testing System Memory Monitoring..."; monit; sleep 5; monit summary | grep Group-2-CIT470-NKU-EDU; stress --vm  1 --vm-bytes 3500M --timeout 45s; monit summary | grep Group-2-CIT470-NKU-EDU')
+s('echo ""; echo "Testing System Memory Monitoring..."; monit; sleep 5; monit summary | grep System; stress --vm  1 --vm-bytes 3500M --timeout 45s; monit summary | grep System')
 
 # Verifiy Monit monitors CPU usages
-s('echo ""; echo "Testing System CPU Monitoring..."; monit; sleep 5; monit summary | grep Group-2-CIT470-NKU-EDU; stress --vm-bytes 512M --cpu 100 --timeout 90s; monit summary | grep Group-2-CIT470-NKU-EDU')
+s('echo ""; echo "Testing System CPU Monitoring..."; monit; sleep 5; monit summary | grep System; stress --vm-bytes 512M --cpu 100 --timeout 90s; monit summary | grep System')
 
 # Verifiy Monit monitors Disk Space usages
 s('echo ""; echo "Testing Monit Disk Monitoring..."; monit summary | grep -e HOME -e ROOT -e VAR; echo ""; echo "Filling /HOME..."; dd if=/dev/zero of=/home/zero bs=51200 count=1000000; echo ""; echo "Filling /VAR..."; dd if=/dev/zero of=/var/zero bs=51200 count=1000000; echo ""; echo "Filling /..."; dd if=/dev/zero of=/zero bs=51200 count=1000000; echo ""; echo "Waiting for Monit Cycles"; sleep 90; monit summary | grep -e HOME -e ROOT -e VAR;  echo ""; echo "Cleaning up disk test..."; rm -f /home/zero; rm -f /var/zero; rm -f /zero')
