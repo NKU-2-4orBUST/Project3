@@ -1,7 +1,7 @@
 from os import system as s
 
 # Installing stress for testing
-s.('yum -y install stress')
+s('yum -y install stress')
 
 # Verifiy Monit monitors and restarts SSH
 s('echo ""; echo "Testing SSH..."; systemctl stop sshd; monit; sleep 5; monit summary | grep SSH; sleep 35; monit summary | grep SSH')
