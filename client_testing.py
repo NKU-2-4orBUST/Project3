@@ -4,7 +4,7 @@ from os import system as s
 s('yum -y install stress')
 
 # Verifiy Monit monitors and restarts SSH
-s('echo ""; echo "Testing SSH..."; systemctl stop sshd; monit summary | grep SSH; monit; sleep 30; monit summary | grep SSH')
+s('echo ""; echo ""; echo "Testing SSH..."; systemctl stop sshd; systemctl status sshd; sleep 10; echo "verifying monit sees SSH back up...; monit summary | grep SSH')
 
 # Verifiy Monit monitors and restarts RSYSLOG
 s('echo ""; echo "Testing RSYSLOG..."; systemctl stop rsyslog; monit; sleep 1; monit summary | grep RSYSLOG; sleep 35; monit summary | grep RSYSLOG')
