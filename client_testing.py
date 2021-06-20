@@ -9,6 +9,9 @@ s('echo ""; echo "Testing RSYSLOG..."; systemctl stop rsyslog; monit; sleep 5; m
 # Verifiy Monit monitors and restarts SENDMAIL
 s('echo ""; echo "Testing SENDMAIL..."; systemctl stop sendmail; monit; sleep 5; monit summary | grep SENDMAIL; sleep 35; monit summary | grep SENDMAIL')
 
+# Verifiy Monit monitors and restarts LDAP
+s('echo ""; echo "Testing LDAP..."; systemctl stop nslcd; monit; sleep 5; monit summary | grep LDAP; sleep 35; monit summary | grep SLAPD')
+
 # Verifiy Monit monitors Memory usages
 s('echo ""; echo "Testing System Memory Monitoring..."; monit; sleep 5; monit summary | grep Group-2-CIT470-NKU-EDU; stress --vm  1 --vm-bytes 3500M --timeout 45s; monit summary | grep Group-2-CIT470-NKU-EDU')
 
