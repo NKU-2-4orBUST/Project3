@@ -19,7 +19,7 @@ def config():
   # Install and Download monit and dependencies as well as configs
   s('yum install -y sendmail epel-release; yum install -y monit; wget https://github.com/NKU-2-4orBUST/Project3/raw/main/monitrc_client https://github.com/NKU-2-4orBUST/Project3/raw/main/rsyslog.conf')
   # Configures Monit and rsyslog
-  s('echo "Configuring rsyslog and Monit"; sed "s/IP_SERVER.*/'+args.server+'/g" monitrc_client > monitrc1; sed "s/IP_CLIENT.*/'+args.client+'/g" monitrcrc1 > /etc/monitrc; sed "s/IP_SERVER.*/'+args.server+':514/g" rsyslog.conf > /etc/rsyslog.conf; systemctl enable monit rsyslog; systemctl start monit rsyslog')
+  s('echo "Configuring rsyslog and Monit"; sed "s/IP_SERVER.*/'+args.server+'/g" monitrc_client > monitrc1; sed "s/IP_CLIENT.*/'+args.client+'/g" monitrcrc1 > /etc/monitrc; sed "s/IP_SERVER.*/'+args.server+':514/g" rsyslog.conf > /etc/rsyslog.conf; systemctl enable monit rsyslog; systemctl start monit rsyslog; chmod 0700 /etc/monitrc')
   # Configure Firewall for Monit and rsyslog
   s('echo "Configuring Firewall for rsyslog monitoring"; firewall-cmd --zone=public --add-port=514/tcp --permanent; firewall-cmd --zone=public --add-port=514/udp --permanent;  firewall-cmd --zone=public --add-port=2812/tcp --permanent; firewall-cmd --zone=public --add-port=2812/udp --permanent; firewall-cmd --reload; systemctl restart monit rsyslog')
   # Removes downloaded files
