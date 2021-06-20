@@ -276,28 +276,36 @@ set httpd port 2812 and
 check process RSYSLOG with pidfile /var/run/syslogd.pid
     start program = "/usr/bin/systemctl start rsyslog"
     stop program = "/usr/bin/systemctl stop rsyslog"
-    if 5 restarts within 5 cycles then timeout
+    if 5 restarts within 5 cycles then alert
 
 # Monit sendmail process and restart if it goes down
 check process SENDMAIL with pidfile /var/run/sendmail.pid
     start program = "/usr/bin/systemctl start sendmail"
     stop program = "/usr/bin/systemctl stop sendmail"
-if 5 restarts within 5 cycles then timeout
+    if 5 restarts within 5 cycles then alert
 
 ## Monit SSH service
 check process SSH with pidfile /var/run/sshd.pid
-  start program = "/usr/bin/systemctl start sshd"
-  stop program = "/usr/bin/systemctl stop sshd"
-  if failed port 22 protocol ssh then restart
-  if 5 restarts within 5 cycles then timeout
-
+   start program = "/usr/bin/systemctl start sshd"
+   stop program = "/usr/bin/systemctl stop sshd"
+   if failed port 22 protocol ssh then restart
+   if 5 restarts within 5 cycles then alert
+  
+## Monit LDAP service
+check process LDAP with pidfile /var/run/nslcd/nslcd.pid
+   start program = "/usr/bin/systemctl start nslcd"
+   stop program = "/usr/bin/systemctl stop nslcd"
+   if 5 restarts within 5 cycles then alert
+  
 ## Check Server file systems
 check filesystem "ROOT" with path /
   if space usage > 75% for 2 times within 10 cycles then alert
+
 check filesystem "HOME" with path /home
   if space usage > 75% for 2 times within 10 cycles then alert
   if does not exist then exec "/bin/mount /home"
   if does not exist for 5 cycles then alert
+
 check filesystem "VAR" with path /var
   if space usage > 75% for 2 times within 15 cycles then alert
 
