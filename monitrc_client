@@ -300,7 +300,9 @@ check process LDAP with pidfile /var/run/nslcd/nslcd.pid
 ## Check Server file systems
 check filesystem "ROOT" with path /
   if space usage > 75% for 2 times within 10 cycles then alert
-
+  if does not exist then exec "/bin/mount /home"
+  if does not exist for 5 cycles then alert
+  
 check filesystem "HOME" with path /home
   if space usage > 75% for 2 times within 10 cycles then alert
   if does not exist then exec "/bin/mount /home"
@@ -308,7 +310,9 @@ check filesystem "HOME" with path /home
 
 check filesystem "VAR" with path /var
   if space usage > 75% for 2 times within 15 cycles then alert
-
+  if does not exist then exec "/bin/mount /home"
+  if does not exist for 5 cycles then alert
+  
 check host Server with address IP_SERVER
   if failed ping then alert
   if failed port 22 protocol ssh then alert
